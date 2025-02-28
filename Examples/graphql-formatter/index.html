@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<meta http-equiv="X-UA-Compatible" content="ie=edge">
+					<title>Query Formatter for Power BI</title>
+					<style>
+      /* width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #0033a0;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #00277a;
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: arial;
+  background-color: #ffffff;
+  justify-content: center;
+}
+
+.content {
+  background-color: #fdfdfd;
+  width: min(90vw, 700px);
+  box-shadow: 0 0 5px #151515;
+  border-radius: 36px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 24px;
+  margin: 36px auto;
+}
+
+.polka {
+  background-image: radial-gradient(rgb(201, 201, 201) 10%, transparent 12%);
+  background-size: 36px 36px;
+  background-color: #fdfdfd;
+  background-position: center top;
+}
+
+pre,
+code {
+  font-family: monospace, monospace;
+  outline: none;
+}
+pre {
+  overflow: auto;
+  margin: 0;
+}
+pre > code {
+  display: block;
+  padding: 1rem;
+  word-wrap: normal;
+  outline: none;
+  width: 100%;
+}
+
+figure {
+  margin: auto;
+  width: 100%;
+  border: 2px solid #0033a0;
+  border-radius: 10px;
+  background: none;
+  color: #101010;
+}
+
+#title-h1 {
+  margin: auto;
+}
+
+button {
+  background-color: #0033a0;
+  border: none;
+  color: #c9c9c9;
+  border-radius: 18px;
+  width: 140px;
+  height: 36px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: arial;
+  margin: 10px;
+}
+
+.form-wrapper,
+#result {
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+  margin: auto;
+  padding: 10px 10px;
+}
+
+.text-input,
+.text-input:focus {
+  margin: 5px 0px;
+  width: 100%;
+}
+
+input {
+  font-size: 1.4rem;
+  font-weight: bold;
+  border: none;
+  border: 2px solid #0033a0;
+  background: none;
+  color: #101010;
+  outline: none;
+  padding: 5px;
+}
+
+h1 {
+  color: #0033a0;
+  margin: 1.5rem auto;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+fieldset {
+  border: 2px solid #101010;
+  border-radius: 12px;
+}
+
+label {
+  font-size: 1.1rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.hide {
+  display: none !important;
+}
+
+.warning {
+  font-size: 1lrem;
+  color: red;
+  font-weight: bold;
+  text-align: right;
+  margin: 8px 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.numInput {
+  width: 100%;
+  margin: 5px 0px;
+}
+
+.formRow {
+  display: flex;
+  width: min(100vw, 100%);
+  justify-content: space-between;
+  padding: 10px 10px;
+}
+
+legend {
+  margin: 0 24px;
+  font-weight: bold;
+  font-size: 16px;
+  padding: none;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+  padding: 0 10px;
+}
+
+input:read-only {
+  background: #999999;
+}
+
+textarea {
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 100%;
+  height: 17em;
+  border: 2px solid #0033a0;
+  border-radius: 10px;
+  background: none;
+  color: #101010;
+  resize: none;
+  outline: none;
+  line-height: 1.3;
+  rows: 6;
+  padding: 1rem;
+}
+
+select {
+  width: 100%;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border: none;
+  border: 2px solid #0033a0;
+  background: none;
+  flex: 1;
+  color: #101010;
+  outline: none;
+  padding: 5px;
+  border-radius: 0.2em;
+  overflow: hidden;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+@media screen and (max-width: 560px) {
+  label {
+    font-size: 15px;
+  }
+
+  input,
+  select {
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 561px) {
+  label {
+    font-size: 1.3rem;
+  }
+
+  input,
+  select {
+    font-size: 1.4rem;
+  }
+}
+
+    </style>
+				</head>
+				<body class="polka">
+					<div class="content">
+						<p>Based on a 
+							<a href="https://jsfiddle.net/rockyintel/1sqm7dpf/">jsfiddle by rockyintel
+								<a href=""></a>
+							</p>
+							<h2>Desired API Query</h2>
+							<textarea id="input-text" placeholder="query ExampleQuery {
+  company {
+    ceo
+  }
+  roadster {
+    apoapsis_au
+  }
+}" oninput="formatForPowerBI()"></textarea>
+						</br>
+						<h2>Power BI formatted query</h2>
+						<textarea id="output-text"></textarea>
+					</br>
+					<h2 class="">Power BI full query (basic query)</h2>
+					<h4>You will need to work on converting to table and expanding columns.</h4>
+					<figure>
+						<pre>
+							<code class="" id="full-query-output-text" contenteditable></code>
+						</pre>
+					</figure>
+				</div>
+				<script>
+      const inputText = document.getElementById("input-text");
+let queryText;
+const outputText = document.getElementById("output-text");
+const fullQueryText = document.getElementById("full-query-output-text");
+const formatForPowerBI = () => {
+  if (!inputText.value) {
+    queryText = inputText.placeholder;
+  } else {
+    queryText = inputText.value;
+  }
+
+  let escapedQueryText = queryText
+    .replace(/"/g, '\\""')
+    .replace(/(\r\n|\n|\r)/gm, "")
+    .replace(/\s+/g, " ");
+  outputText.innerHTML = `"{""query"": ""${escapedQueryText}""}"`;
+  fullQueryText.innerHTML = `let
+    Query = Web.Contents(
+	"{{your_api_url}}",
+	[
+	  Headers=[
+	    #"Method"="POST",
+	    #"Content-Type"="application/json",
+	    #"Authorization"="{{your_api_token}}"
+		],
+		Content=Text.ToBinary(${outputText.innerHTML})
+	]
+    ),
+    #"DATA" = Json.Document(Query)
+in
+    #"DATA"`;
+};
+
+formatForPowerBI();
+    </script>
+			</body>
+		</html>
